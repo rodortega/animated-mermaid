@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./editor.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="bar" role="toolbar" aria-label="Diagram">
+        <button id="source-btn" type="button" aria-pressed="true" title="Show or hide the source">Source</button>
+        <span class="sep"></span>
+        <button id="zoom-out" type="button" class="icon" title="Zoom out (−)" aria-label="Zoom out">−</button>
+        <output id="zoom" class="zoom" aria-label="Zoom level">100%</output>
+        <button id="zoom-in" type="button" class="icon" title="Zoom in (+)" aria-label="Zoom in">+</button>
+        <button id="fit" type="button" title="Fit to view (0)">Fit</button>
+        <button id="fullscreen" type="button" aria-pressed="false">Fullscreen</button>
+        <span class="spacer"></span>
+        <button id="replay" type="button" title="Replay the animation">Replay</button>
+        <button id="toggle" type="button" class="primary">Pause</button>
+        <button id="style-btn" type="button" aria-expanded="false" aria-controls="style">Style</button>
+      </div>
+      <div id="style" class="style" hidden>
+        <label>Animation <select id="preset"></select></label>
+        <label>Particles <select id="particleStyle"></select></label>
+        <label>Per edge <input id="particles" type="range" min="0" max="8" /></label>
+        <label>Colours <select id="theme"></select></label>
+        <label>Nodes <select id="nodeStyle"></select></label>
+        <label>Corners <select id="corners"></select></label>
+        <label>Lines <select id="curve"></select></label>
+      </div>
+      <div class="main">
+        <textarea id="source" class="source" spellcheck="false" autocomplete="off" aria-label="Mermaid source"></textarea>
+        <div id="stage" class="stage"><div id="diagram" class="diagram"></div></div>
+      </div>
+      <div id="motion" class="note" hidden>
+        <span>Animations are off because your system asks for reduced motion.</span>
+        <button id="animate-anyway" type="button">Animate anyway</button>
+      </div>
+      <div class="foot"><span id="status" role="status"></span></div>
+    </div>
+    <script src="./vendor/mermaid.min.js"></script>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

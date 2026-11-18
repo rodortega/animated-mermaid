@@ -5,6 +5,10 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "node app/build.mjs"
+    "build": "node app/build.mjs",
+    "orca:sync": "node orca-plugin/scripts/sync.mjs"
+  },
+  "devDependencies": {
+    "mermaid": "11.17.2"
   }
 }

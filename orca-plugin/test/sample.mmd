@@ -1,0 +1,10 @@
+flowchart LR
+    subgraph Sources
+        A[Sensors]
+        B[Logs]
+    end
+    H((Hub))
+    A --> H
+    B --> H
+    H --> E[Dashboards]
+    H --> F[Alerts]

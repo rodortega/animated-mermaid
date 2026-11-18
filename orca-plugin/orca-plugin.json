@@ -1,0 +1,118 @@
+{
+  "manifestVersion": 2,
+  "id": "animated-mermaid",
+  "name": "Animated Mermaid",
+  "version": "0.1.2",
+  "description": "Opens .mmd and .mermaid files as animated diagrams: edges draw on, particles flow, nodes pop in. Zoom, pan, themes and animation presets, fully offline.",
+  "engines": {
+    "orca": ">=1.4.248"
+  },
+  "execution": "sandboxed-ui",
+  "pluginApi": 1,
+  "capabilities": [
+    {
+      "kind": "settings:own"
+    }
+  ],
+  "contributes": {
+    "customEditors": [
+      {
+        "id": "animated-mermaid",
+        "title": "Animated",
+        "extensions": [".mmd", ".mermaid"],
+        "entry": "editor/index.html",
+        "frame": "isolated"
+      }
+    ],
+    "newFiles": [
+      {
+        "id": "mermaid-diagram",
+        "title": "New Mermaid diagram",
+        "extension": ".mmd",
+        "template": "templates/new-diagram.mmd"
+      }
+    ],
+    "settings": [
+      {
+        "key": "theme",
+        "title": "Colours",
+        "description": "auto follows Orca: light themes use Light, dark themes use the dark colours below.",
+        "type": "string",
+        "default": "auto",
+        "enum": ["auto", "aurora", "ember", "mono", "ocean", "forest", "sunset", "neon", "light", "contrast"],
+        "enumLabels": ["Auto", "Aurora", "Ember", "Mono", "Ocean", "Forest", "Sunset", "Neon", "Light", "High contrast"]
+      },
+      {
+        "key": "darkTheme",
+        "title": "Dark colours",
+        "description": "Colours that Auto uses while Orca has a dark theme.",
+        "type": "string",
+        "default": "aurora",
+        "enum": ["aurora", "ember", "mono", "ocean", "forest", "sunset", "neon"],
+        "enumLabels": ["Aurora", "Ember", "Mono", "Ocean", "Forest", "Sunset", "Neon"]
+      },
+      {
+        "key": "nodeStyle",
+        "title": "Node style",
+        "type": "string",
+        "default": "gradient",
+        "enum": ["gradient", "glass", "neon", "solid", "outline", "soft"],
+        "enumLabels": ["Gradient", "Glass", "Neon", "Solid", "Outline", "Soft"]
+      },
+      {
+        "key": "corners",
+        "title": "Corners",
+        "type": "string",
+        "default": "rounded",
+        "enum": ["sharp", "rounded", "pill"],
+        "enumLabels": ["Sharp", "Rounded", "Pill"]
+      },
+      {
+        "key": "curve",
+        "title": "Lines",
+        "type": "string",
+        "default": "basis",
+        "enum": ["basis", "linear", "step"],
+        "enumLabels": ["Smooth", "Straight", "Step"]
+      },
+      {
+        "key": "preset",
+        "title": "Animation",
+        "type": "string",
+        "default": "build",
+        "enum": ["build", "cascade", "fade", "slide", "typewriter", "pulse", "none"],
+        "enumLabels": ["Build", "Cascade", "Fade", "Slide", "Typewriter", "Pulse", "None (static)"]
+      },
+      {
+        "key": "particleStyle",
+        "title": "Particles",
+        "type": "string",
+        "default": "dot",
+        "enum": ["dot", "comet", "spark", "arrow"],
+        "enumLabels": ["Dot", "Comet", "Spark", "Arrow"]
+      },
+      {
+        "key": "particles",
+        "title": "Particles per edge",
+        "description": "0 turns them off.",
+        "type": "integer",
+        "default": 3,
+        "minimum": 0,
+        "maximum": 8
+      },
+      {
+        "key": "showSource",
+        "title": "Show the source beside the diagram",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "respectReducedMotion",
+        "title": "Respect reduced motion",
+        "description": "Show diagrams without animation when the system asks for reduced motion (Windows: Settings > Accessibility > Visual effects > Animation effects). Turn off to always animate.",
+        "type": "boolean",
+        "default": true
+      }
+    ]
+  }
+}

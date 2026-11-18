@@ -1,0 +1,6 @@
+flowchart LR
+    idea([Idea]) --> plan[Plan]
+    plan --> build[Build]
+    build --> ship{Ship it?}
+    ship -- yes --> done([Done])
+    ship -- not yet --> build
