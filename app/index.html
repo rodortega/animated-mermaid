@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Animated Mermaid diagrams</title>
+    <meta name="description" content="Render Mermaid flowcharts and animate them: edges draw on, particles travel along them, nodes pop in." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230ea5e9'/%3E%3Cstop offset='1' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./demo.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <h1>Animated Mermaid</h1>
+      </div>
+      <p class="sub">Write a flowchart, and watch it build itself: nodes pop in, edges draw on with a soft glow, and particles keep flowing along them.</p>
+    </header>
+
+    <main class="layout">
+      <section class="panel editor" aria-label="Diagram source">
+        <div class="panel-head">
+          <label for="example">Example</label>
+          <select id="example"></select>
+        </div>
+        <textarea id="source" spellcheck="false" autocomplete="off" aria-label="Mermaid source"></textarea>
+        <p id="status" class="status" role="status"></p>
+      </section>
+
+      <section class="panel preview" aria-label="Animated preview">
+        <div id="stage" class="stage">
+          <div class="view-bar" role="toolbar" aria-label="View">
+            <span class="group-label" aria-hidden="true">View</span>
+            <div class="zoom">
+              <button id="zoom-out" type="button" class="icon-btn" aria-label="Zoom out" title="Zoom out (−)">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" /></svg>
+              </button>
+              <output id="zoom-readout" class="zoom-readout" aria-label="Zoom level">100%</output>
+              <button id="zoom-in" type="button" class="icon-btn" aria-label="Zoom in" title="Zoom in (+)">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14" /></svg>
+              </button>
+            </div>
+            <button id="fit" type="button" class="btn" title="Fit to view (0)" aria-label="Fit to view">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+              <span class="btn-text">Fit</span>
+            </button>
+            <button id="fullscreen" type="button" class="btn" aria-pressed="false" aria-label="Fullscreen">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path id="fs-icon" d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" /></svg>
+              <span class="btn-text" id="fs-label">Fullscreen</span>
+            </button>
+            <span class="spacer"></span>
+            <button id="toggle" type="button" class="btn primary">Pause</button>
+            <button id="replay" type="button" class="btn" aria-label="Replay" title="Replay">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5" /></svg>
+              <span class="btn-text">Replay</span>
+            </button>
+          </div>
+          <div id="diagram" class="diagram"></div>
+          <p class="hint">Ctrl/⌘ + scroll or pinch to zoom · drag to pan when zoomed in · keys + − 0</p>
+        </div>
+
+        <div class="settings">
+          <fieldset class="group">
+            <legend>Animation</legend>
+            <label class="row" for="preset">Preset
+              <select id="preset">
+                <option value="build">Build</option>
+                <option value="cascade">Cascade</option>
+                <option value="fade">Fade</option>
+                <option value="slide">Slide</option>
+                <option value="typewriter">Typewriter</option>
+                <option value="pulse">Pulse</option>
+                <option value="none">None (static)</option>
+              </select>
+            </label>
+            <label class="row" for="particleStyle">Particles
+              <select id="particleStyle">
+                <option value="dot">Dot</option>
+                <option value="comet">Comet</option>
+                <option value="spark">Spark</option>
+                <option value="arrow">Arrow</option>
+              </select>
+            </label>
+            <label class="row" for="particles">Per edge
+              <span class="range">
+                <input id="particles" type="range" min="0" max="8" value="3" />
+                <output id="particles-out" for="particles">3</output>
+              </span>
+            </label>
+            <label class="row" for="speed">Speed
+              <select id="speed">
+                <option value="slow">Slow</option>
+                <option value="normal" selected>Normal</option>
+                <option value="fast">Fast</option>
+              </select>
+            </label>
+            <label class="row" for="flow">Dashed flow
+              <select id="flow">
+                <option value="off">Off</option>
+                <option value="slow">Slow</option>
+                <option value="fast">Fast</option>
+              </select>
+            </label>
+            <label class="row check" for="loop">Loop <input id="loop" type="checkbox" /></label>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend>Style</legend>
+            <label class="row" for="theme">Colours
+              <select id="theme">
+                <option value="aurora">Aurora</option>
+                <option value="ember">Ember</option>
+                <option value="mono">Mono</option>
+                <option value="ocean">Ocean</option>
+                <option value="forest">Forest</option>
+                <option value="sunset">Sunset</option>
+                <option value="neon">Neon</option>
+                <option value="light">Light</option>
+                <option value="contrast">High contrast</option>
+              </select>
+            </label>
+            <label class="row" for="nodeStyle">Nodes
+              <select id="nodeStyle">
+                <option value="gradient">Gradient</option>
+                <option value="glass">Glass</option>
+                <option value="neon">Neon</option>
+                <option value="solid">Solid</option>
+                <option value="outline">Outline</option>
+                <option value="soft">Soft</option>
+              </select>
+            </label>
+            <label class="row" for="corners">Corners
+              <select id="corners">
+                <option value="sharp">Sharp</option>
+                <option value="rounded" selected>Rounded</option>
+                <option value="pill">Pill</option>
+              </select>
+            </label>
+            <label class="row" for="curve">Lines
+              <select id="curve">
+                <option value="basis">Smooth</option>
+                <option value="linear">Straight</option>
+                <option value="step">Step</option>
+              </select>
+            </label>
+            <label class="row" for="thickness">Thickness
+              <select id="thickness">
+                <option value="thin">Thin</option>
+                <option value="normal" selected>Normal</option>
+                <option value="thick">Thick</option>
+              </select>
+            </label>
+            <label class="row check" for="glow">Glow <input id="glow" type="checkbox" checked /></label>
+          </fieldset>
+        </div>
+      </section>
+    </main>
+
+    <section class="panel usage" aria-label="How to use it">
+      <h2>Use it in your own page</h2>
+      <pre><code>import { animateMermaid } from './animate-mermaid.js';
+
+const ctl = await animateMermaid(document.querySelector('#diagram'), source, {
+  theme: 'ocean',          // aurora, ember, mono, ocean, forest, sunset, neon, light, contrast
+  nodeStyle: 'glass',      // gradient, glass, neon, solid, outline, soft
+  corners: 'rounded',      // sharp, rounded, pill
+  curve: 'basis',          // basis (smooth), linear (straight), step
+  thickness: 'normal',     // thin, normal, thick
+  glow: true,
+  preset: 'cascade',       // build, cascade, fade, slide, typewriter, pulse, none
+  particleStyle: 'comet',  // dot, comet, spark, arrow
+  particles: 3, speed: 'normal', flow: 'off', loop: false,
+  panZoom: true,           // ctrl/cmd + wheel, pinch, drag, keys + - 0
+  onViewChange: ({ zoom, fullscreen }) =&gt; {},
+});
+
+ctl.zoomIn(); ctl.zoomOut(); ctl.setZoom(1.5); ctl.fit(); ctl.toggleFullscreen();
+await ctl.set({ preset: 'pulse', theme: 'light', nodeStyle: 'soft' });
+ctl.pause(); ctl.play(); ctl.replay();
+ctl.setSpeed('fast'); ctl.setParticles(5); ctl.setFlow('slow');</code></pre>
+    </section>
+
+    <script type="module" src="./demo.js"></script>
+  </body>
+</html>

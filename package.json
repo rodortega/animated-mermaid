@@ -1,0 +1,10 @@
+{
+  "name": "animated-mermaid",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node app/build.mjs"
+  }
+}
