@@ -1,0 +1,184 @@
+{
+  "name": "animated-mermaid-preview",
+  "displayName": "Animated Mermaid Preview",
+  "description": "Preview Mermaid flowcharts as animated diagrams: edges draw on, particles flow, nodes pop in. Zoom, pan, themes and animation presets.",
+  "version": "0.1.3",
+  "publisher": "local",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "languages": [
+      {
+        "id": "mermaid",
+        "aliases": [
+          "Mermaid"
+        ],
+        "extensions": [
+          ".mmd",
+          ".mermaid"
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "command": "animatedMermaid.openPreview",
+        "title": "Open Animated Preview to the Side",
+        "category": "Animated Mermaid",
+        "icon": "$(play-circle)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "animatedMermaid.openPreview",
+          "when": "editorLangId == mermaid",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "animatedMermaid.openPreview",
+          "when": "editorLangId == mermaid || editorLangId == markdown",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "animatedMermaid.openPreview",
+        "key": "ctrl+k alt+m",
+        "mac": "cmd+k alt+m",
+        "when": "editorTextFocus && (editorLangId == mermaid || editorLangId == markdown)"
+      }
+    ],
+    "configuration": {
+      "title": "Animated Mermaid",
+      "properties": {
+        "animatedMermaid.theme": {
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "auto",
+            "aurora",
+            "ember",
+            "mono",
+            "ocean",
+            "forest",
+            "sunset",
+            "neon",
+            "light",
+            "contrast"
+          ],
+          "markdownDescription": "Colour theme. `auto` follows VS Code: light themes use `light`, high contrast uses `contrast`, dark themes use `#animatedMermaid.darkTheme#`."
+        },
+        "animatedMermaid.darkTheme": {
+          "type": "string",
+          "default": "aurora",
+          "enum": [
+            "aurora",
+            "ember",
+            "mono",
+            "ocean",
+            "forest",
+            "sunset",
+            "neon"
+          ],
+          "description": "Colour theme used by `auto` when VS Code has a dark theme."
+        },
+        "animatedMermaid.nodeStyle": {
+          "type": "string",
+          "default": "gradient",
+          "enum": [
+            "gradient",
+            "glass",
+            "neon",
+            "solid",
+            "outline",
+            "soft"
+          ]
+        },
+        "animatedMermaid.corners": {
+          "type": "string",
+          "default": "rounded",
+          "enum": [
+            "sharp",
+            "rounded",
+            "pill"
+          ]
+        },
+        "animatedMermaid.curve": {
+          "type": "string",
+          "default": "basis",
+          "enum": [
+            "basis",
+            "linear",
+            "step"
+          ],
+          "enumDescriptions": [
+            "Smooth",
+            "Straight",
+            "Step"
+          ]
+        },
+        "animatedMermaid.preset": {
+          "type": "string",
+          "default": "build",
+          "enum": [
+            "build",
+            "cascade",
+            "fade",
+            "slide",
+            "typewriter",
+            "pulse",
+            "none"
+          ]
+        },
+        "animatedMermaid.particleStyle": {
+          "type": "string",
+          "default": "dot",
+          "enum": [
+            "dot",
+            "comet",
+            "spark",
+            "arrow"
+          ]
+        },
+        "animatedMermaid.particles": {
+          "type": "number",
+          "default": 3,
+          "minimum": 0,
+          "maximum": 8,
+          "description": "Particles per edge. 0 turns them off."
+        },
+        "animatedMermaid.replayOnEdit": {
+          "type": "boolean",
+          "default": false,
+          "description": "Replay the build-up animation every time the diagram changes. Off shows edits straight away in their final state."
+        },
+        "animatedMermaid.respectReducedMotion": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show diagrams without animation when your system asks for reduced motion (on Windows: Settings > Accessibility > Visual effects > Animation effects). Turn off to always animate."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "node scripts/sync.mjs",
+    "sync": "node scripts/sync.mjs",
+    "check": "node scripts/sync.mjs && node --check extension.js && node --check media/preview.js && node --check media/animate-mermaid.js",
+    "package": "npx --yes @vscode/vsce@3.6.0 package --allow-missing-repository --skip-license"
+  },
+  "devDependencies": {
+    "mermaid": "11.17.2"
+  }
+}

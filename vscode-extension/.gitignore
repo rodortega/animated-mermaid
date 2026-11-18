@@ -1,0 +1,5 @@
+media/animate-mermaid.js
+media/mermaid.min.js
+media/mermaid.LICENSE
+node_modules/
+*.vsix

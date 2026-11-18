@@ -1,0 +1,135 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--vscode-editor-background);
+  color: var(--vscode-foreground);
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.bar,
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--vscode-panel-border, #8884);
+  background: var(--vscode-editorWidget-background, var(--vscode-editor-background));
+}
+
+.spacer {
+  flex: 1;
+}
+
+button {
+  padding: 3px 10px;
+  border: 1px solid var(--vscode-button-border, transparent);
+  border-radius: 2px;
+  background: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--vscode-button-secondaryHoverBackground);
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 1px solid var(--vscode-focusBorder);
+  outline-offset: 1px;
+}
+
+#toggle {
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+}
+
+#toggle:hover {
+  background: var(--vscode-button-hoverBackground);
+}
+
+button.icon {
+  min-width: 26px;
+  padding: 3px 6px;
+}
+
+.zoom {
+  min-width: 44px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.settings label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+select {
+  padding: 2px 4px;
+  border: 1px solid var(--vscode-dropdown-border, transparent);
+  background: var(--vscode-dropdown-background);
+  color: var(--vscode-dropdown-foreground);
+  font: inherit;
+}
+
+.stage {
+  --stage-bg: #020618;
+  --stage-grid: #ffffff08;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background:
+    linear-gradient(var(--stage-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--stage-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--stage-bg);
+}
+
+.diagram {
+  position: absolute;
+  inset: 0;
+}
+
+.foot {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 3px 8px;
+  border-top: 1px solid var(--vscode-panel-border, #8884);
+  color: var(--vscode-descriptionForeground);
+  font-size: 11px;
+}
+
+#status.error {
+  color: var(--vscode-errorForeground);
+}
+
+.motion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-top: 1px solid var(--vscode-panel-border, #8884);
+  background: var(--vscode-inputValidation-infoBackground, var(--vscode-editorWidget-background));
+}
+
+.settings[hidden],
+.motion[hidden] {
+  display: none;
+}
